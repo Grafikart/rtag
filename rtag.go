@@ -2,24 +2,12 @@ package main
 
 import (
 	"fmt"
-	"runtime"
 	"time"
 )
 
 func main() {
 	ch := make(chan int)
-	os := runtime.GOOS
-
-	switch os {
-	case "linux":
-		keyboards := findKeyboardsFromSysClass()
-		for _, keyboard := range keyboards {
-			go linuxKeyListener(keyboard, ch)
-		}
-	case "windows":
-		go windowsKeyListener(ch)
-	}
-
+	go keyListener(ch)
 	fmt.Println("Listening for \"Pause\" key...")
 	var start time.Time
 	var subtitle *Subtitle

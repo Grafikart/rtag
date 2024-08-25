@@ -1,3 +1,5 @@
+//go:build linux
+
 package main
 
 import (
@@ -8,7 +10,14 @@ import (
 	"strings"
 )
 
-func linuxKeyListener(path string, ch chan int) {
+func keyListener(ch chan int) {
+	keyboards := findKeyboardsFromSysClass()
+	for _, keyboard := range keyboards {
+		go keyboardKeyListener(keyboard, ch)
+	}
+}
+
+func keyboardKeyListener(path string, ch chan int) {
 	f, err := os.OpenFile(path, os.O_RDONLY, os.ModeCharDevice)
 	if err != nil {
 		panic(err)

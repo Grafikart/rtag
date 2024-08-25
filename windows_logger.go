@@ -1,3 +1,5 @@
+//go:build windows
+
 package main
 
 import (
@@ -20,7 +22,7 @@ func GetAsyncKeyState(vKey int) bool {
 	return ret == 0x8001 || ret == 0x8000
 }
 
-func windowsKeyListener(ch chan int) {
+func keyListener(ch chan int) {
 	for {
 		if GetAsyncKeyState(keyCode) {
 			ch <- int(keyCode)
