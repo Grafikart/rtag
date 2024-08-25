@@ -17,10 +17,8 @@ func MakeSubtitle(path string, start time.Time) *Subtitle {
 	if err != nil {
 		panic(err)
 	}
-	err = os.Chown(path, 1000, 1001)
-	if err != nil {
-		panic(err)
-	}
+	// On linux we need to start the app using sudo, ensure the file is owned by the user
+	os.Chown(path, 1000, 1001)
 	return &Subtitle{
 		start: start,
 		file:  f,
