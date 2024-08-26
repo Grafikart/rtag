@@ -9,6 +9,7 @@ import (
 // Method to write markers to a .srt file
 type Subtitle struct {
 	start time.Time
+	index int32
 	file  *os.File
 }
 
@@ -27,7 +28,8 @@ func MakeSubtitle(path string, start time.Time) *Subtitle {
 
 func (s *Subtitle) AddMarker() {
 	elapsedTime := time.Now().Sub(s.start)
-	s.file.WriteString(fmt.Sprintf("%s --> %s\nCUT\n\n", timeCode(elapsedTime), timeCode(elapsedTime+time.Second)))
+	s.index++
+	s.file.WriteString(fmt.Sprintf("%d\n%s --> %s\nCUT\n\n", s.index, timeCode(elapsedTime), timeCode(elapsedTime+time.Second)))
 	return
 }
 
