@@ -27,15 +27,13 @@ func MakeSubtitle(path string, start time.Time) *Subtitle {
 }
 
 func (s *Subtitle) AddMarker() {
-	elapsedTime := time.Now().Sub(s.start)
+	elapsedTime := time.Since(s.start)
 	s.index++
 	s.file.WriteString(fmt.Sprintf("%d\n%s --> %s\nCUT\n\n", s.index, timeCode(elapsedTime), timeCode(elapsedTime+time.Second)))
-	return
 }
 
 func (s *Subtitle) Close() {
 	s.file.Close()
-	return
 }
 
 func timeCode(d time.Duration) string {
